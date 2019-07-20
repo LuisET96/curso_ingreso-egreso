@@ -6,7 +6,7 @@
         <div class="auto-form-wrapper">
           <form #formLogin="ngForm" (ngSubmit)="onSubmit(formLogin.value)">
 
-            <div class="form-group">
+            <div class="forformLoginm-group">
               <label class="label">Usuario</label>
               <div class="input-group">
                 <input type="email" class="form-control" placeholder="Email" ngModel name="email" required>
@@ -31,7 +31,18 @@
             </div>
 
             <div class="form-group">
-              <button [disabled]="!formLogin.valid" class="btn btn-primary submit-btn btn-block">Login</button>
+
+              <ng-container *ngIf="!isLoading; else elseTemplate">
+                <button [disabled]="!formLogin.valid" class="btn btn-primary submit-btn btn-block">Entrar</button>
+              </ng-container>
+
+              <ng-template #elseTemplate>
+                <button disabled class="btn btn-primary submit-btn btn-block">
+                  <i class="fa fa-spin fa-sync"></i>
+                  Espere...
+                </button>
+              </ng-template>
+
             </div>
 
             <div class="text-block text-center my-3">
