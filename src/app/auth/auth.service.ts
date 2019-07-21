@@ -6,19 +6,23 @@ import * as firebase from 'firebase';
 
 import Swal from 'sweetalert2';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { User } from './user.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
+
+import * as fromAuth from '../auth/auth.actions';
 import * as fromUI from '../shared/ui.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private userSubscription: Subscription = new Subscription();
+
   constructor(
     private afAuth: AngularFireAuth,
     private router: Router,
@@ -27,7 +31,16 @@ export class AuthService {
   ) { }
 
   initAuthListener() {
-    this.afAuth.authState.subscribe((fbUser: firebase.User) => { });
+    this.userSubscription = this.afAuth.authState.subscribe((fbUser: firebase.User) => {
+      if (fbUser) {
+        this.afDb.doc(`${fbUser.uid}/usuario`).valueChanges()
+          .subscribe((user: User) => {
+            this.store.dispatch(fromAuth.setUser({ user }));
+          });
+      } else {
+        this.userSubscription.unsubscribe();
+      }
+    });
   }
 
   signUp(email: string, nombre: string, password: string): void {
@@ -60,8 +73,9 @@ export class AuthService {
 
     this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then(res => {
-        this.router.navigateByUrl('/');
         this.store.dispatch(fromUI.desactivarLogin());
+
+        this.router.navigateByUrl('/');
       })
       .catch(err => {
         Swal.fire('Error en el login', err.message, 'error');
@@ -70,6 +84,8 @@ export class AuthService {
   }
 
   logOut(): void {
+    this.store.dispatch(fromAuth.setUser({ user: null }));
+
     this.router.navigateByUrl('/login');
     this.afAuth.auth.signOut();
   }
