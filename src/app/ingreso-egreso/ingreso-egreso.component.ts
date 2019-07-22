@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { IngresoEgreso } from './ingreso-egreso.model';
+import { IngresoEgresoModel } from './ingreso-egreso.model';
 import { IngresoEgresoService } from './ingreso-egreso.service';
 
 import Swal from 'sweetalert2';
@@ -45,10 +45,10 @@ export class IngresoEgresoComponent implements OnInit, OnDestroy {
   }
 
   onSubmitIE() {
-    this.store.dispatch(fromUI.activarLogin());
+    this.store.dispatch(fromUI.activarLoadingAction());
 
     const { descripcion, monto } = this.formIE.value;
-    const ingresoEgreso: IngresoEgreso = new IngresoEgreso(
+    const ingresoEgreso: IngresoEgresoModel = new IngresoEgresoModel(
       descripcion,
       monto,
       this.tipo
@@ -59,10 +59,10 @@ export class IngresoEgresoComponent implements OnInit, OnDestroy {
         Swal.fire('Creado', ingresoEgreso.descripcion, 'success');
 
         this.formIE.reset({ monto: 0 });
-        this.store.dispatch(fromUI.desactivarLogin());
+        this.store.dispatch(fromUI.desactivarLoadingAction());
       })
       .catch(err => {
-        this.store.dispatch(fromUI.desactivarLogin());
+        this.store.dispatch(fromUI.desactivarLoadingAction());
         throw new Error('err');
       });
   }

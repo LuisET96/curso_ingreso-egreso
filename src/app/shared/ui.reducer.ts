@@ -7,17 +7,17 @@ export interface UiState {
 
 const initState: UiState = {
   isLoading: false
-}
+};
 
 export const uiReducer = createReducer(initState,
-  on(fromUI.activarLogin, (state): UiState => {
+  on(fromUI.activarLoadingAction, (state): UiState => {
     return {
       isLoading: true
-    }
+    };
   }),
-  on(fromUI.desactivarLogin, (state): UiState => {
+  on(fromUI.desactivarLoadingAction, (state): UiState => {
     return {
       isLoading: false
-    }
+    };
   }),
 );

@@ -1,9 +1,9 @@
 import { createAction } from '@ngrx/store';
 
-export const activarLogin = createAction(
+export const activarLoadingAction = createAction(
   '[UI Loading] Cargando...'
 );
 
-export const desactivarLogin = createAction(
+export const desactivarLoadingAction = createAction(
   '[UI Loading] Fin de carga...'
 );

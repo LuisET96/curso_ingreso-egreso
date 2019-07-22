@@ -36,7 +36,7 @@ export class AuthService {
       if (fbUser) {
         this.afDb.doc(`${fbUser.uid}/usuario`).valueChanges()
           .subscribe((user: User) => {
-            this.store.dispatch(fromAuth.setUser({ user }));
+            this.store.dispatch(fromAuth.setUserAction({ user }));
             this.usuario = user;
           });
       } else {
@@ -47,7 +47,7 @@ export class AuthService {
   }
 
   signUp(email: string, nombre: string, password: string): void {
-    this.store.dispatch(fromUI.activarLogin());
+    this.store.dispatch(fromUI.activarLoadingAction());
 
     this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(res => {
@@ -63,33 +63,33 @@ export class AuthService {
             this.router.navigateByUrl('/');
           });
 
-        this.store.dispatch(fromUI.desactivarLogin());
+        this.store.dispatch(fromUI.desactivarLoadingAction());
         this.initAuthListener();
       })
       .catch(err => {
         Swal.fire('Error en el registro', err.message, 'error');
-        this.store.dispatch(fromUI.desactivarLogin());
+        this.store.dispatch(fromUI.desactivarLoadingAction());
       });
   }
 
   signIn(email: string, password: string): void {
-    this.store.dispatch(fromUI.activarLogin());
+    this.store.dispatch(fromUI.activarLoadingAction());
 
     this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then(res => {
-        this.store.dispatch(fromUI.desactivarLogin());
+        this.store.dispatch(fromUI.desactivarLoadingAction());
 
         this.initAuthListener();
         this.router.navigateByUrl('/');
       })
       .catch(err => {
         Swal.fire('Error en el login', err.message, 'error');
-        this.store.dispatch(fromUI.desactivarLogin());
+        this.store.dispatch(fromUI.desactivarLoadingAction());
       });
   }
 
   logOut(): void {
-    this.store.dispatch(fromAuth.setUser({ user: null }));
+    this.store.dispatch(fromAuth.setUserAction({ user: null }));
 
     this.router.navigateByUrl('/login');
     this.afAuth.auth.signOut();
