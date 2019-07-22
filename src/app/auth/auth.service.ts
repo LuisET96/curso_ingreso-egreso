@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 import * as firebase from 'firebase';
 
-import Swal from 'sweetalert2';
 import { map } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 
@@ -21,6 +21,7 @@ import * as fromUI from '../shared/ui.actions';
   providedIn: 'root'
 })
 export class AuthService {
+  private usuario: User;
   private userSubscription: Subscription = new Subscription();
 
   constructor(
@@ -36,8 +37,10 @@ export class AuthService {
         this.afDb.doc(`${fbUser.uid}/usuario`).valueChanges()
           .subscribe((user: User) => {
             this.store.dispatch(fromAuth.setUser({ user }));
+            this.usuario = user;
           });
       } else {
+        this.usuario = null;
         this.userSubscription.unsubscribe();
       }
     });
@@ -61,6 +64,7 @@ export class AuthService {
           });
 
         this.store.dispatch(fromUI.desactivarLogin());
+        this.initAuthListener();
       })
       .catch(err => {
         Swal.fire('Error en el registro', err.message, 'error');
@@ -75,6 +79,7 @@ export class AuthService {
       .then(res => {
         this.store.dispatch(fromUI.desactivarLogin());
 
+        this.initAuthListener();
         this.router.navigateByUrl('/');
       })
       .catch(err => {
@@ -101,5 +106,9 @@ export class AuthService {
           return fbUser !== null;
         })
       );
+  }
+
+  getUser() {
+    return { ...this.usuario };
   }
 }

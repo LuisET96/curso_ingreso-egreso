@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app.routing';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -51,6 +52,7 @@ import { appReducers } from './app.reducer';
       maxAge: 25,
       logOnly: environment.production
     }),
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
