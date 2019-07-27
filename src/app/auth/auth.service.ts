@@ -89,7 +89,7 @@ export class AuthService {
   }
 
   logOut(): void {
-    this.store.dispatch(fromAuth.setUserAction({ user: null }));
+    this.store.dispatch(fromAuth.unsetUserAction());
 
     this.router.navigateByUrl('/login');
     this.afAuth.auth.signOut();
@@ -108,7 +108,7 @@ export class AuthService {
       );
   }
 
-  getUser() {
+  getUser(): User {
     return { ...this.usuario };
   }
 }

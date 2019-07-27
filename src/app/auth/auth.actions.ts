@@ -5,3 +5,7 @@ export const setUserAction = createAction(
   '[Auth] Set User',
   props<{ user: User }>()
 );
+
+export const unsetUserAction = createAction(
+  '[Auth] Unset User'
+);

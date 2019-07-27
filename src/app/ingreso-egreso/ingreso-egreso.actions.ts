@@ -6,6 +6,6 @@ export const setItemsAction = createAction(
   props<{ items: IngresoEgresoModel[] }>()
 );
 
-export const removeItemsAction = createAction(
+export const unsetItemsAction = createAction(
   '[IngresoEgreso] Remover movimiento'
 );

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app.routing';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ChartsModule } from 'ng2-charts';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -27,6 +28,9 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers } from './app.reducer';
 
+// Pipes
+import { OrdenarIePipe } from './ingreso-egreso/ordenar-ie.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +42,8 @@ import { appReducers } from './app.reducer';
     DetalleComponent,
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    OrdenarIePipe,
   ],
   imports: [
     BrowserModule,
@@ -52,7 +57,8 @@ import { appReducers } from './app.reducer';
       maxAge: 25,
       logOnly: environment.production
     }),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

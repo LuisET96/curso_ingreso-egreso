@@ -22,7 +22,7 @@ export const ingresoEgresoReducer = createReducer(initState,
     };
   }),
 
-  on(fromMovimientos.removeItemsAction, (state): IngresoEgresoState => {
+  on(fromMovimientos.unsetItemsAction, (state): IngresoEgresoState => {
     return {
       items: []
     };

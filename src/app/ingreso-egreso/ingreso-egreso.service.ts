@@ -56,6 +56,8 @@ export class IngresoEgresoService {
   cancelarSubscripciones() {
     this.ingresoEgresoListenerSubs.unsubscribe();
     this.ingresoEgresoItemsSubs.unsubscribe();
+
+    this.store.dispatch(fromMovimientos.unsetItemsAction());
   }
 
   crearIE(ingresoEgreso: IngresoEgresoModel) {
@@ -63,5 +65,12 @@ export class IngresoEgresoService {
 
     return this.afDB.doc(`${user.uid}/ingresos-egresos`)
       .collection('items').add({ ...ingresoEgreso });
+  }
+
+  borrarIE(item: any) {
+    const user = this.auth.getUser();
+
+    return this.afDB.doc(`${user.uid}/ingresos-egresos/items/${item.uid}`)
+      .delete();
   }
 }
