@@ -3,14 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './auth/login/login.component';
 import { LogupComponent } from './auth/logup/logup.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { dashboardRoutes } from './dashboard/dashboard.routing';
 import { AuthGuard } from './auth/auth-guard.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: LogupComponent },
-  { path: '', component: DashboardComponent, children: dashboardRoutes, canActivate: [AuthGuard] },
+  {
+    path: '',
+    loadChildren: './ingreso-egreso/ingreso-egreso.module#IngresoEgresoModule',
+    canLoad: [AuthGuard]
+  },
   { path: '**', redirectTo: '' }
 ];
 
